@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace BFS
+namespace BST
 {
 	class Program
 	{
@@ -16,7 +16,7 @@ namespace BFS
 			Node clone;
 			Node other;
 			int index;
-			for (int i = 1; i < 1000; i++)
+			for (int i = 1; i <= 1000; i++)
 			{
 				do {
 					index = rand.Next (1, 1000);
