@@ -7,31 +7,55 @@ namespace BST
 {
 	class Program
 	{
-		static void Main ()
+		static void Main (string[] args)
 		{
-			Node root = new Node (0, 0);
+			Console.ForegroundColor = ConsoleColor.Green;
+			Console.WriteLine ("\n==> BST START <==\n");
+			Console.ResetColor ();
 
+			Console.WriteLine ("Interpreting Args ...");
+			int size = Convert.ToInt32(args [0]);
+			Console.WriteLine ("Input: {0}\n", size);
+
+			Console.WriteLine ("Setting Up\n");
 			Random rand = new Random ();
+			Node root = new Node (0, 0);
 			Node node;
 			Node clone;
-			Node other;
 			int index;
-			for (int i = 1; i <= 1000; i++)
-			{
-				do {
-					index = rand.Next (1, 1000);
-					other = root.Find (index);
-				} while (null != other);
+			int numindex;
+
+			Console.WriteLine ("Building Random Machine ...");
+			List<int> numbers = new List<int> ();
+			for (int i = 1; i <= size; i++) {
+				numbers.Add (i);
+			}
+			Console.WriteLine ("Random Machine Built Successfully!\n");
+
+			Console.WriteLine ("Building Tree ...");
+			for (int i = 1; i <= size; i++) {
+				numindex = rand.Next(0, numbers.Count () - 1);
+				index = numbers [numindex];
+				numbers.RemoveAt (numindex);
 
 				node = new Node (index, i);
 				clone = node.Clone ();
 				root.AddLink (ref clone);
 			}
+			Console.WriteLine ("Tree Built Successfully!\n");
 
-			Node found = root.Find (1);
-			Console.WriteLine ("\nFound!\nIndex: {0}, Data {1}", found.Index, found.Data);
-			found = root.Find (1000);
-			Console.WriteLine ("\nFound!\nIndex: {0}, Data {1}", found.Index, found.Data);
+			do {
+				Console.ForegroundColor = ConsoleColor.Yellow;
+				Console.Write ("Find (0 to end program): ");
+				Console.ResetColor ();
+				index = Convert.ToInt32 (Console.ReadLine ());
+
+				Node found = root.Find (index);
+				Console.WriteLine ("\nFound!\nIndex: {0}, Data {1}\n", found.Index, found.Data);
+			} while (0 != index);
+
+			Console.ForegroundColor = ConsoleColor.Red;
+			Console.WriteLine ("==> BST END <==\n");
 		}
 	}
 	
@@ -136,18 +160,14 @@ namespace BST
 
 			if (this.Index < index) {
 				if (null == this.Right) {
-					//Console.WriteLine ("\nNULL\n");
 					return null;
 				} else {
-					//Console.WriteLine ("Index: {0} >> {1}", this.Index, this.right.Index);
 					return this.right.Find (index, path);
 				}
 			} else if (this.Index > index) {
 				if (null == this.Left) {
-					//Console.WriteLine ("\nNULL\n");
 					return null;
 				} else {
-					//Console.WriteLine ("Index: {0} >> {1}", this.Index, this.left.Index);
 					return this.left.Find (index, path);
 				}
 			} else {
@@ -160,25 +180,21 @@ namespace BST
 			int i = this.Index;
 			path.Add (i);
 
-			if (this.Index < index) {
+			if (i < index) {
 				if (null == this.Right) {
-					//Console.WriteLine ("\nNULL\n");
 					return null;
 				} else {
-					//Console.WriteLine ("Index: {0} >> {1}", this.Index, this.right.Index);
 					return this.right.Find (index, path);
 				}
-			} else if (this.Index > index) {
+			} else if (i > index) {
 				if (null == this.Left) {
-					//Console.WriteLine ("\nNULL\n");
 					return null;
 				} else {
-					//Console.WriteLine ("Index: {0} >> {1}", this.Index, this.left.Index);
-					path.ForEach (delegate(int ie) { Console.Write("{0} >> ", ie); });
-					Console.Write ("\n");
 					return this.left.Find (index, path);
 				}
 			} else {
+				path.ForEach (delegate(int ie) { Console.Write(">> {0} ", ie); });
+				Console.Write ("\n");
 				return this;
 			}
 		}
